@@ -46,4 +46,5 @@ You can view the live dashboard hosted on GitHub Pages here:
 
 ## Sources
 [**Real-Time Search and Recommendation at Scale Using Embeddings and Hopsworks**](https://www.youtube.com/watch?v=9vBRjGgdyTY)
+
 [**System Design for Recommendations and Search**](https://eugeneyan.com/writing/system-design-for-discovery/)
