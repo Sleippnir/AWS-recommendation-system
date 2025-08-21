@@ -43,3 +43,7 @@ You can view the live dashboard hosted on GitHub Pages here:
 * **HTML5**
 * **Tailwind CSS** (via CDN)
 * **Vanilla JavaScript** (for all interactivity and graph rendering)
+
+## Sources
+[**Real-Time Search and Recommendation at Scale Using Embeddings and Hopsworks**](https://www.youtube.com/watch?v=9vBRjGgdyTY)
+[**System Design for Recommendations and Search**](https://eugeneyan.com/writing/system-design-for-discovery/)
