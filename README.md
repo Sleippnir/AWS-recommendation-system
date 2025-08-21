@@ -40,7 +40,7 @@ You can view the live dashboard hosted on GitHub Pages here:
 
 ## How to Use
 
-1.  **Navigate:** Use the tabs at the top of the page ("Verified Plan", "AWS Mapping", "Interactive Graph") to switch between views.
+1.  **Navigate:** Use the tabs at the top of the page ("Plan", "AWS Mapping", "Interactive Graph") to switch between views.
 2.  **Explore the Graph:** On the "Interactive Graph" tab, hover your mouse over any of the nodes (e.g., "User Tower", "Re-ranking: XGBoost") to see a tooltip with its description and to highlight its connections within the data pipeline.
 
 ## Deployment to GitHub Pages
