@@ -6,7 +6,7 @@ This repository contains the source code for a single-page interactive web appli
 
 This project dashboard is a comprehensive, interactive tool designed for project stakeholders, including developers, data scientists, and architects. It consolidates three key project documents into a single, easy-to-navigate interface:
 
-1.  **The Verified Plan:** A step-by-step plan detailing the system's architecture, training protocols, and operational strategies.
+1.  **The  Plan:** A step-by-step plan detailing the system's architecture, training protocols, and operational strategies.
 2.  **AWS Service Mapping:** A direct mapping of each system component to its corresponding AWS service.
 3.  **Interactive Data Lineage Graph:** A dynamic visualization of the real-time request/response cycle, showing data flow and target latencies for each stage of the serving pipeline.
 
