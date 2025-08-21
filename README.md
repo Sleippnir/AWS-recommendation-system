@@ -4,7 +4,7 @@ This repository contains the source code for a single-page interactive web appli
 
 ## Overview
 
-This project dashboard is a comprehensive, interactive tool designed for project stakeholders, including developers, data scientists, and architects. It consolidates three key project documents into a single, easy-to-navigate interface:
+This project dashboard is a minimalist tool designed for project stakeholders. It consolidates three project documents into a single, easy-to-navigate interface:
 
 1.  **The  Plan:** A step-by-step plan detailing the system's architecture, training protocols, and operational strategies.
 2.  **AWS Service Mapping:** A direct mapping of each system component to its corresponding AWS service.
@@ -37,24 +37,6 @@ The primary business objective for this recommendation system is to **increase t
 You can view the live dashboard hosted on GitHub Pages here:
 
 [**Recommendation System Dashboard**](https://sleippnir.github.io/AWS-recommendation-system/)
-
-## How to Use
-
-1.  **Navigate:** Use the tabs at the top of the page ("Plan", "AWS Mapping", "Interactive Graph") to switch between views.
-2.  **Explore the Graph:** On the "Interactive Graph" tab, hover your mouse over any of the nodes (e.g., "User Tower", "Re-ranking: XGBoost") to see a tooltip with its description and to highlight its connections within the data pipeline.
-
-## Deployment to GitHub Pages
-
-This application is designed to be deployed easily as a static site.
-
-1.  **Repository:** Create a new public GitHub repository.
-2.  **Upload:** Upload the `index.html` file from this project to the repository. Ensure the file is named exactly `index.html`.
-3.  **Enable Pages:**
-    * In your repository settings, go to the "Pages" section.
-    * Under "Build and deployment," select "Deploy from a branch" as the source.
-    * Set the branch to `main` and the folder to `/root`.
-    * Save your changes.
-4.  **Access:** GitHub will provide you with the URL for your live site. It may take a few minutes for the deployment to complete.
 
 ## Tech Stack
 
