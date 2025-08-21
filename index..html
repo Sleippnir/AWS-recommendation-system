@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consolidated Recommendation System Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chosen Palette: Slate & Blue -->
+    <!-- Application Structure Plan: The application uses a tab-based navigation structure to present three distinct views: Verified Plan, AWS Mapping, and an Interactive Graph. This was chosen to consolidate all project artifacts into a single, cohesive dashboard, allowing users to easily switch between the high-level plan, the specific cloud architecture, and a visual representation of the system's relationships without leaving the page. This structure is highly user-friendly for project review and analysis. -->
+    <!-- Visualization & Content Choices: 1) Docs: The text documents are presented in a clean, readable, single-column format. Goal: Inform. Method: Styled HTML. 2) Graph: The core visualization is a relational graph built with HTML/CSS/JS. Goal: Show Relationships & Organize. Method: Nodes (divs) and edges (lines drawn with JS) represent system components and data flows. Interaction: Hovering over a node highlights its connections and displays info. Justification: This transforms static plans into an explorable system map, making complex interactions intuitive. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9; /* slate-100 */
+        }
+        .tab-button.active {
+            border-color: #3b82f6;
+            color: #3b82f6;
+            background-color: #eff6ff;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .prose h3 {
+            margin-top: 2em;
+            margin-bottom: 1em;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        .prose h4 {
+            margin-top: 1.5em;
+            margin-bottom: 0.75em;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        .prose p, .prose li {
+            color: #475569; /* slate-600 */
+        }
+        .prose ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+        }
+        .prose ol {
+            list-style-type: decimal;
+            padding-left: 1.5rem;
+        }
+        .graph-node {
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        .graph-node.highlight, .graph-node:hover {
+            transform: scale(1.1) translate(-45%, -45%);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.5);
+            z-index: 10;
+        }
+        .graph-edge {
+            transition: all 0.2s ease-in-out;
+        }
+        .graph-edge.highlight {
+            stroke-width: 4;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <header class="bg-white/90 backdrop-blur-lg sticky top-0 z-50 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-9 h-9 bg-blue-500 rounded-lg flex items-center justify-center text-white font-bold text-xl">R</div>
+                    <h1 class="text-2xl font-bold text-slate-900">Project Dashboard</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <!-- Tab Navigation -->
+        <div class="mb-8 border-b border-slate-300">
+            <nav class="flex space-x-4" aria-label="Tabs">
+                <button class="tab-button active font-medium px-4 py-2 text-sm rounded-t-lg border-b-2 border-transparent hover:border-slate-400 hover:text-slate-700" data-tab="plan">Verified Plan</button>
+                <button class="tab-button font-medium px-4 py-2 text-sm rounded-t-lg border-b-2 border-transparent hover:border-slate-400 hover:text-slate-700" data-tab="aws">AWS Mapping</button>
+                <button class="tab-button font-medium px-4 py-2 text-sm rounded-t-lg border-b-2 border-transparent hover:border-slate-400 hover:text-slate-700" data-tab="graph">Interactive Graph</button>
+            </nav>
+        </div>
+
+        <!-- Tab Content -->
+        <div id="tab-content-container" class="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-slate-200">
+            <!-- Verified Plan Tab -->
+            <div id="plan" class="tab-content active prose max-w-none">
+                <h2 class="text-3xl font-bold tracking-tight text-slate-900">Verified Recommendation System Architecture & Plan</h2>
+                <p class="text-lg text-slate-600">This document is a consolidated, step-by-step plan reflecting all verified conclusions for building a high-performance, personalized recommendation system.</p>
+                
+                <h3>Phase 1: Data & Feature Engineering</h3>
+                <h4>1. Required Data Sources:</h4>
+                <ul>
+                    <li><strong>User Profiles:</strong> Static data including user ID, demographics, and stated preferences.</li>
+                    <li><strong>Product Catalogs:</strong> All attributes for items from both restaurants and supermarkets.</li>
+                    <li><strong>Interaction Logs:</strong> High-volume event streams including clicks, views, add-to-carts, purchases, and impressions.</li>
+                </ul>
+                <h4>2. Feature Engineering Pipeline:</h4>
+                <ul>
+                    <li><strong>Text Features:</strong> Processed by <code>all-MiniLM-L6-v2</code> for semantic embeddings.</li>
+                    <li><strong>Image Features:</strong> Processed by <code>EfficientNetB0</code> for visual embeddings.</li>
+                    <li><strong>Categorical Features:</strong> Mapped to trainable embedding vectors.</li>
+                </ul>
+                <h4>3. Negative Sampling Strategy:</h4>
+                <p>A <strong>Hybrid Negative Sampling</strong> approach will be used:</p>
+                <ul>
+                    <li><strong>Primary (Corrected In-Batch Negatives):</strong> Uses other items in a training batch as negatives, with a correction factor to reduce popularity bias.</li>
+                    <li><strong>Augmentation (Hard Negatives):</strong> Supplements with true hard negatives from impression logs (items shown but ignored).</li>
+                </ul>
+
+                <h3>Phase 2: Model Architecture & Training</h3>
+                <h4>1. Core Architecture: Two-Tower Model</h4>
+                <ul>
+                    <li><strong>User Tower:</strong> Generates a 128-dim embedding for a user's intent and taste. Passes concatenated inputs through two <code>Dense</code> layers (1024 -> 512).</li>
+                    <li><strong>Product/Business Tower:</strong> A single, unified tower for all product types to enable cross-domain learning. Passes concatenated inputs through two <code>Dense</code> layers (1024 -> 512).</li>
+                </ul>
+                <h4>2. Training Protocol:</h4>
+                <ul>
+                    <li><strong>Loss Function:</strong> The definitive choice is <strong>Softmax Cross-Entropy</strong> for its stability and efficiency.</li>
+                    <li><strong>Cold-Start Handling:</strong> <strong>Feature Dropout</strong> will be used during training to force the model to learn content-based recommendations.</li>
+                </ul>
+
+                <h3>Phase 3: Deployment & Serving Pipeline</h3>
+                <h4>1. Multi-Stage Serving Pipeline:</h4>
+                <ol>
+                    <li><strong>Stage 1: Retrieval:</strong> The User Tower computes an embedding in real-time to query a <strong>ScaNN index</strong>, retrieving ~200 candidates. (Target Latency: ~70ms)</li>
+                    <li><strong>Stage 2: Re-ranking:</strong> A lightweight <strong>XGBoost</strong> model re-orders the candidates using richer cross-features for precision. (Target Latency: ~25ms)</li>
+                    <li><strong>Stage 3: Fairness & Diversity:</strong> Business logic boosts scores for new/less popular businesses and ensures diversity. (Target Latency: ~10ms)</li>
+                    <li><strong>Stage 4: Real-Time Filtering:</strong> The list is filtered against a real-time database (e.g., Redis) to remove out-of-stock items. (Target Latency: ~10ms)</li>
+                </ol>
+                <h4>2. Handling New Items:</h4>
+                <p><strong>Continuous Index Rebuilding</strong> via an automated, offline "hot-swap" pipeline ensures new items are discoverable within minutes with maximum accuracy and zero downtime.</p>
+            </div>
+
+            <!-- AWS Mapping Tab -->
+            <div id="aws" class="tab-content prose max-w-none">
+                 <h2 class="text-3xl font-bold tracking-tight text-slate-900">AWS Service Mapping</h2>
+                 <p class="text-lg text-slate-600">This section maps each component of the verified plan to the appropriate AWS service, creating a scalable and manageable cloud architecture.</p>
+                 
+                 <h3>Phase 1: Data & Feature Engineering</h3>
+                 <ul>
+                    <li><strong>Interaction Logs (Real-time):</strong> Amazon Kinesis Data Streams</li>
+                    <li><strong>Raw Data Lake:</strong> Amazon S3</li>
+                    <li><strong>Product Catalogs / User Profiles:</strong> Amazon DynamoDB or Amazon Aurora</li>
+                    <li><strong>Batch ETL Processing:</strong> AWS Glue or Amazon EMR</li>
+                    <li><strong>Feature Storage & Serving:</strong> Amazon SageMaker Feature Store</li>
+                 </ul>
+                 
+                 <h3>Phase 2: Model Architecture & Training</h3>
+                 <ul>
+                    <li><strong>Model Development:</strong> Amazon SageMaker Studio</li>
+                    <li><strong>Model Training:</strong> Amazon SageMaker Training Jobs</li>
+                    <li><strong>Hyperparameter Tuning:</strong> Amazon SageMaker Automatic Model Tuning</li>
+                    <li><strong>Model Artifact Storage:</strong> Amazon S3</li>
+                 </ul>
+
+                 <h3>Phase 3: Deployment & Serving Pipeline</h3>
+                 <ul>
+                    <li><strong>Container Management:</strong> Amazon ECR (Elastic Container Registry)</li>
+                    <li><strong>User Tower & Re-ranker Inference:</strong> Amazon SageMaker Endpoints</li>
+                    <li><strong>Candidate Index (ANN):</strong> Amazon OpenSearch Service (with k-NN)</li>
+                    <li><strong>Fairness, Diversity & Filtering Logic:</strong> AWS Lambda</li>
+                    <li><strong>Real-time State (e.g., stock):</strong> Amazon ElastiCache for Redis</li>
+                    <li><strong>Continuous Index Rebuilding Orchestration:</strong> AWS Step Functions + AWS CodePipeline</li>
+                    <li><strong>Load Balancing:</strong> Application Load Balancer (ALB)</li>
+                 </ul>
+            </div>
+
+            <!-- Interactive Graph Tab -->
+            <div id="graph" class="tab-content">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold tracking-tight text-slate-900">Data Lineage & Latency Graph</h2>
+                    <p class="mt-2 text-lg text-slate-600">This graph shows the real-time data flow for a single recommendation request, including target latencies for each stage. Hover over a component for details.</p>
+                </div>
+                <div id="graph-container" class="relative w-full h-[80vh] min-h-[600px] bg-slate-50 rounded-lg border border-slate-200 overflow-hidden">
+                    <canvas id="graph-canvas" class="absolute top-0 left-0 w-full h-full"></canvas>
+                    <div id="graph-nodes"></div>
+                    <div id="graph-tooltip" class="absolute hidden bg-slate-800 text-white text-sm rounded-md py-2 px-4 shadow-lg z-20 pointer-events-none"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        const tabs = document.querySelectorAll('.tab-button');
+        const contents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = tab.getAttribute('data-tab');
+
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                contents.forEach(content => {
+                    if (content.id === target) {
+                        content.classList.add('active');
+                        if (target === 'graph') {
+                            setTimeout(drawDataLineageGraph, 50);
+                        }
+                    } else {
+                        content.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+        const dataLineageGraphData = {
+            nodes: [
+                { id: 'user_client', label: 'User Client', group: 1, description: 'Request originates from user device. Receives final recommendations.', x: 0.5, y: 0.1, latency: 'Total: ~115ms' },
+                { id: 'user_tower', label: 'Retrieval: User Tower', group: 1, description: 'Generates user embedding from profile & real-time features.', x: 0.2, y: 0.4, latency: '~70ms' },
+                { id: 'feature_store', label: 'Feature Store', group: 2, description: 'Provides real-time user features (e.g., recent clicks).', x: 0.5, y: 0.4 },
+                { id: 'scann', label: 'Retrieval: ScaNN Index', group: 2, description: 'ANN index finds ~200 relevant candidates.', x: 0.2, y: 0.8 },
+                { id: 'ranker', label: 'Re-ranking: XGBoost', group: 1, description: 'Scores and re-orders the 200 candidates.', x: 0.5, y: 0.8, latency: '~25ms' },
+                { id: 'lambda', label: 'Fairness & Filtering', group: 1, description: 'Applies business logic, diversity rules, and filtering.', x: 0.8, y: 0.8, latency: '~20ms' },
+                { id: 'redis', label: 'Real-time State', group: 2, description: 'Provides real-time data like stock availability.', x: 0.8, y: 0.6 },
+            ],
+            edges: [
+                { from: 'user_client', to: 'user_tower', label: 'Request' },
+                { from: 'feature_store', to: 'user_tower', label: 'User Features' },
+                { from: 'user_tower', to: 'scann', label: 'User Embedding' },
+                { from: 'scann', to: 'ranker', label: '~200 Candidates' },
+                { from: 'feature_store', to: 'ranker', label: 'Cross-Features' },
+                { from: 'ranker', to: 'lambda', label: 'Ranked List' },
+                { from: 'redis', to: 'lambda', label: 'Stock Data' },
+                { from: 'lambda', to: 'user_client', label: 'Final Response' },
+            ]
+        };
+
+        const groupColors = {
+            1: 'bg-emerald-100 border-emerald-300 text-emerald-800', // Pipeline Stage
+            2: 'bg-sky-100 border-sky-300 text-sky-800',      // Data Source
+        };
+
+        const nodesContainer = document.getElementById('graph-nodes');
+        const canvas = document.getElementById('graph-canvas');
+        const ctx = canvas ? canvas.getContext('2d') : null;
+        const tooltip = document.getElementById('graph-tooltip');
+
+        function drawDataLineageGraph() {
+            const container = document.getElementById('graph-container');
+            if (!container || !ctx) return;
+            const { width, height } = container.getBoundingClientRect();
+            canvas.width = width;
+            canvas.height = height;
+            
+            nodesContainer.innerHTML = '';
+            
+            dataLineageGraphData.nodes.forEach(node => {
+                const nodeEl = document.createElement('div');
+                nodeEl.id = `node-${node.id}`;
+                nodeEl.className = `graph-node absolute flex flex-col items-center justify-center p-2 rounded-lg border-2 text-center text-xs sm:text-sm shadow-md ${groupColors[node.group]}`;
+                
+                const labelEl = document.createElement('span');
+                labelEl.className = 'font-semibold';
+                labelEl.textContent = node.label;
+                nodeEl.appendChild(labelEl);
+
+                if(node.latency) {
+                    const latencyEl = document.createElement('span');
+                    latencyEl.className = 'text-blue-600 font-bold text-xs mt-1';
+                    latencyEl.textContent = node.latency;
+                    nodeEl.appendChild(latencyEl);
+                }
+
+                nodeEl.style.left = `${node.x * 100}%`;
+                nodeEl.style.top = `${node.y * 100}%`;
+                nodeEl.style.transform = 'translate(-50%, -50%)';
+                nodeEl.dataset.id = node.id;
+                nodesContainer.appendChild(nodeEl);
+            });
+
+            ctx.clearRect(0, 0, width, height);
+            dataLineageGraphData.edges.forEach(edge => {
+                const fromNode = document.getElementById(`node-${edge.from}`);
+                const toNode = document.getElementById(`node-${edge.to}`);
+                if (fromNode && toNode) {
+                    const fromRect = fromNode.getBoundingClientRect();
+                    const toRect = toNode.getBoundingClientRect();
+                    const containerRect = container.getBoundingClientRect();
+
+                    const startX = fromRect.left + fromRect.width / 2 - containerRect.left;
+                    const startY = fromRect.top + fromRect.height / 2 - containerRect.top;
+                    const endX = toRect.left + toRect.width / 2 - containerRect.left;
+                    const endY = toRect.top + toRect.height / 2 - containerRect.top;
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(startX, startY);
+                    ctx.lineTo(endX, endY);
+                    ctx.strokeStyle = '#94a3b8'; // slate-400
+                    ctx.lineWidth = 2;
+                    ctx.globalAlpha = 0.6;
+                    ctx.stroke();
+
+                    // Edge Label
+                    if (edge.label) {
+                        ctx.save();
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'bottom';
+                        ctx.font = '12px Inter';
+                        ctx.fillStyle = '#64748b'; // slate-500
+                        ctx.translate((startX + endX) / 2, (startY + endY) / 2);
+                        
+                        let angle = Math.atan2(endY - startY, endX - startX);
+                        if (angle < -Math.PI / 2 || angle > Math.PI / 2) {
+                            angle += Math.PI;
+                        }
+                        ctx.rotate(angle);
+
+                        ctx.fillText(edge.label, 0, -5);
+                        ctx.restore();
+                    }
+
+                    // Arrowhead
+                    const angle = Math.atan2(endY - startY, endX - startX);
+                    ctx.save();
+                    ctx.translate(endX, endY);
+                    ctx.rotate(angle);
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    ctx.lineTo(-10, -5);
+                    ctx.lineTo(-10, 5);
+                    ctx.closePath();
+                    ctx.fillStyle = '#94a3b8';
+                    ctx.fill();
+                    ctx.restore();
+                }
+            });
+        }
+
+        function highlightLineageConnections(nodeId) {
+            const allNodes = document.querySelectorAll('.graph-node');
+            allNodes.forEach(n => n.classList.remove('highlight'));
+            document.getElementById(`node-${nodeId}`).classList.add('highlight');
+            
+            const container = document.getElementById('graph-container');
+            const { width, height } = container.getBoundingClientRect();
+            ctx.clearRect(0, 0, width, height);
+
+            dataLineageGraphData.edges.forEach(edge => {
+                const isConnected = edge.from === nodeId || edge.to === nodeId;
+                const fromNode = document.getElementById(`node-${edge.from}`);
+                const toNode = document.getElementById(`node-${edge.to}`);
+                if (fromNode && toNode) {
+                    const fromRect = fromNode.getBoundingClientRect();
+                    const toRect = toNode.getBoundingClientRect();
+                    const containerRect = container.getBoundingClientRect();
+
+                    const startX = fromRect.left + fromRect.width / 2 - containerRect.left;
+                    const startY = fromRect.top + fromRect.height / 2 - containerRect.top;
+                    const endX = toRect.left + toRect.width / 2 - containerRect.left;
+                    const endY = toRect.top + toRect.height / 2 - containerRect.top;
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(startX, startY);
+                    ctx.lineTo(endX, endY);
+                    ctx.strokeStyle = isConnected ? '#3b82f6' : '#cbd5e1';
+                    ctx.lineWidth = isConnected ? 3 : 2;
+                    ctx.globalAlpha = isConnected ? 1.0 : 0.3;
+                    ctx.stroke();
+
+                     if (edge.label) {
+                        ctx.save();
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'bottom';
+                        ctx.font = '12px Inter';
+                        ctx.fillStyle = isConnected ? '#2563eb' : '#a1a1aa';
+                        ctx.translate((startX + endX) / 2, (startY + endY) / 2);
+                        
+                        let angle = Math.atan2(endY - startY, endX - startX);
+                        if (angle < -Math.PI / 2 || angle > Math.PI / 2) {
+                            angle += Math.PI;
+                        }
+                        ctx.rotate(angle);
+
+                        ctx.fillText(edge.label, 0, -5);
+                        ctx.restore();
+                    }
+                    
+                    const angle = Math.atan2(endY - startY, endX - startX);
+                    ctx.save();
+                    ctx.translate(endX, endY);
+                    ctx.rotate(angle);
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    ctx.lineTo(-10, -5);
+                    ctx.lineTo(-10, 5);
+                    ctx.closePath();
+                    ctx.fillStyle = isConnected ? '#3b82f6' : '#cbd5e1';
+                    ctx.fill();
+                    ctx.restore();
+                }
+            });
+        }
+
+        nodesContainer.addEventListener('mouseover', (e) => {
+            const targetNode = e.target.closest('.graph-node');
+            if (targetNode) {
+                const nodeId = targetNode.dataset.id;
+                const nodeData = dataLineageGraphData.nodes.find(n => n.id === nodeId);
+                highlightLineageConnections(nodeId);
+                
+                tooltip.textContent = nodeData.description;
+                tooltip.classList.remove('hidden');
+                
+                const nodeRect = targetNode.getBoundingClientRect();
+                const containerRect = nodesContainer.getBoundingClientRect();
+                
+                tooltip.style.left = `${nodeRect.left - containerRect.left + nodeRect.width / 2}px`;
+                tooltip.style.top = `${nodeRect.top - containerRect.top}px`;
+                tooltip.style.transform = 'translate(-50%, -110%)';
+            }
+        });
+
+        nodesContainer.addEventListener('mouseout', (e) => {
+            const targetNode = e.target.closest('.graph-node');
+            if (targetNode) {
+                const allNodes = document.querySelectorAll('.graph-node');
+                allNodes.forEach(n => n.classList.remove('highlight'));
+                tooltip.classList.add('hidden');
+                drawDataLineageGraph();
+            }
+        });
+
+        window.addEventListener('resize', drawDataLineageGraph);
+        
+        // Initial draw if graph tab is active
+        if (document.getElementById('graph').classList.contains('active')) {
+             setTimeout(drawDataLineageGraph, 50);
+        }
+
+    </script>
+</body>
+</html>
