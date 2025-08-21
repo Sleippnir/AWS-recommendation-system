@@ -6,7 +6,7 @@
     <title>Consolidated Recommendation System Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chosen Palette: Slate & Blue -->
-    <!-- Application Structure Plan: The application uses a tab-based navigation structure to present three distinct views: Verified Plan, AWS Mapping, and an Interactive Graph. This was chosen to consolidate all project artifacts into a single, cohesive dashboard, allowing users to easily switch between the high-level plan, the specific cloud architecture, and a visual representation of the system's relationships without leaving the page. This structure is highly user-friendly for project review and analysis. -->
+    <!-- Application Structure Plan: The application uses a tab-based navigation structure to present three distinct views: Plan, AWS Mapping, and an Interactive Graph. This was chosen to consolidate all project artifacts into a single, cohesive dashboard, allowing users to easily switch between the high-level plan, the specific cloud architecture, and a visual representation of the system's relationships without leaving the page. This structure is highly user-friendly for project review and analysis. -->
     <!-- Visualization & Content Choices: 1) Docs: The text documents are presented in a clean, readable, single-column format. Goal: Inform. Method: Styled HTML. 2) Graph: The core visualization is a relational graph built with HTML/CSS/JS. Goal: Show Relationships & Organize. Method: Nodes (divs) and edges (lines drawn with JS) represent system components and data flows. Interaction: Hovering over a node highlights its connections and displays info. Justification: This transforms static plans into an explorable system map, making complex interactions intuitive. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -86,7 +86,7 @@
         <!-- Tab Navigation -->
         <div class="mb-8 border-b border-slate-300">
             <nav class="flex space-x-4" aria-label="Tabs">
-                <button class="tab-button active font-medium px-4 py-2 text-sm rounded-t-lg border-b-2 border-transparent hover:border-slate-400 hover:text-slate-700" data-tab="plan">Verified Plan</button>
+                <button class="tab-button active font-medium px-4 py-2 text-sm rounded-t-lg border-b-2 border-transparent hover:border-slate-400 hover:text-slate-700" data-tab="plan"> Plan</button>
                 <button class="tab-button font-medium px-4 py-2 text-sm rounded-t-lg border-b-2 border-transparent hover:border-slate-400 hover:text-slate-700" data-tab="aws">AWS Mapping</button>
                 <button class="tab-button font-medium px-4 py-2 text-sm rounded-t-lg border-b-2 border-transparent hover:border-slate-400 hover:text-slate-700" data-tab="graph">Interactive Graph</button>
             </nav>
@@ -94,10 +94,10 @@
 
         <!-- Tab Content -->
         <div id="tab-content-container" class="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-slate-200">
-            <!-- Verified Plan Tab -->
+            <!--  Plan Tab -->
             <div id="plan" class="tab-content active prose max-w-none">
-                <h2 class="text-3xl font-bold tracking-tight text-slate-900">Verified Recommendation System Architecture & Plan</h2>
-                <p class="text-lg text-slate-600">This document is a consolidated, step-by-step plan reflecting all verified conclusions for building a high-performance, personalized recommendation system.</p>
+                <h2 class="text-3xl font-bold tracking-tight text-slate-900"> Recommendation System Architecture & Plan</h2>
+                <p class="text-lg text-slate-600">This document is a consolidated, step-by-step plan reflecting all  conclusions for building a high-performance, personalized recommendation system.</p>
                 
                 <h3>Phase 1: Data & Feature Engineering</h3>
                 <h4>1. Required Data Sources:</h4>
@@ -146,7 +146,7 @@
             <!-- AWS Mapping Tab -->
             <div id="aws" class="tab-content prose max-w-none">
                  <h2 class="text-3xl font-bold tracking-tight text-slate-900">AWS Service Mapping</h2>
-                 <p class="text-lg text-slate-600">This section maps each component of the verified plan to the appropriate AWS service, creating a scalable and manageable cloud architecture.</p>
+                 <p class="text-lg text-slate-600">This section maps each component of the  plan to the appropriate AWS service, creating a scalable and manageable cloud architecture.</p>
                  
                  <h3>Phase 1: Data & Feature Engineering</h3>
                  <ul>
