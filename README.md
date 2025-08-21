@@ -36,7 +36,7 @@ The primary business objective for this recommendation system is to **increase t
 
 You can view the live dashboard hosted on GitHub Pages here:
 
-[**https://Sleippnir.github.io/recommendation-dashboard/**](https://Sleippnir.github.io/recommendation-dashboard/)
+[**Recommendation System Dashboard**](https://sleippnir.github.io/AWS-recommendation-system/)
 
 ## How to Use
 
