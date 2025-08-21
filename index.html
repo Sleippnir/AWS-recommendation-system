@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consolidated Recommendation System Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chosen Palette: Slate & Blue -->
-    <!-- Application Structure Plan: The application uses a tab-based navigation structure to present three distinct views: Plan, AWS Mapping, and an Interactive Graph. This was chosen to consolidate all project artifacts into a single, cohesive dashboard, allowing users to easily switch between the high-level plan, the specific cloud architecture, and a visual representation of the system's relationships without leaving the page. This structure is highly user-friendly for project review and analysis. -->
+    <!-- Chosen Palette: Midnight Slate -->
+    <!-- Application Structure Plan: The application uses a tab-based navigation structure to present three distinct views:  Plan, AWS Mapping, and an Interactive Graph. This was chosen to consolidate all project artifacts into a single, cohesive dashboard, allowing users to easily switch between the high-level plan, the specific cloud architecture, and a visual representation of the system's relationships without leaving the page. This structure is highly user-friendly for project review and analysis. -->
     <!-- Visualization & Content Choices: 1) Docs: The text documents are presented in a clean, readable, single-column format. Goal: Inform. Method: Styled HTML. 2) Graph: The core visualization is a relational graph built with HTML/CSS/JS. Goal: Show Relationships & Organize. Method: Nodes (divs) and edges (lines drawn with JS) represent system components and data flows. Interaction: Hovering over a node highlights its connections and displays info. Justification: This transforms static plans into an explorable system map, making complex interactions intuitive. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,12 +15,12 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f1f5f9; /* slate-100 */
+            background-color: #0f172a; /* slate-900 */
         }
         .tab-button.active {
             border-color: #3b82f6;
-            color: #3b82f6;
-            background-color: #eff6ff;
+            color: #60a5fa; /* blue-400 */
+            background-color: #1e293b; /* slate-800 */
         }
         .tab-content {
             display: none;
@@ -33,15 +33,17 @@
             margin-bottom: 1em;
             font-size: 1.5rem;
             font-weight: 600;
+            color: #f1f5f9; /* slate-100 */
         }
         .prose h4 {
             margin-top: 1.5em;
             margin-bottom: 0.75em;
             font-size: 1.25rem;
             font-weight: 600;
+            color: #e2e8f0; /* slate-200 */
         }
         .prose p, .prose li {
-            color: #475569; /* slate-600 */
+            color: #94a3b8; /* slate-400 */
         }
         .prose ul {
             list-style-type: disc;
@@ -51,13 +53,16 @@
             list-style-type: decimal;
             padding-left: 1.5rem;
         }
+        .prose strong {
+            color: #cbd5e1; /* slate-300 */
+        }
         .graph-node {
             transition: all 0.2s ease-in-out;
             cursor: pointer;
         }
         .graph-node.highlight, .graph-node:hover {
             transform: scale(1.1) translate(-45%, -45%);
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.5);
+            box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.6); /* blue-400 with opacity */
             z-index: 10;
         }
         .graph-edge {
@@ -69,14 +74,14 @@
         }
     </style>
 </head>
-<body class="text-slate-800">
+<body class="text-slate-300">
 
-    <header class="bg-white/90 backdrop-blur-lg sticky top-0 z-50 border-b border-slate-200">
+    <header class="bg-slate-900/80 backdrop-blur-lg sticky top-0 z-50 border-b border-slate-700">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-4">
                 <div class="flex items-center space-x-3">
                     <div class="w-9 h-9 bg-blue-500 rounded-lg flex items-center justify-center text-white font-bold text-xl">R</div>
-                    <h1 class="text-2xl font-bold text-slate-900">Project Dashboard</h1>
+                    <h1 class="text-2xl font-bold text-slate-100">Project Dashboard</h1>
                 </div>
             </div>
         </div>
@@ -84,20 +89,20 @@
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <!-- Tab Navigation -->
-        <div class="mb-8 border-b border-slate-300">
+        <div class="mb-8 border-b border-slate-700">
             <nav class="flex space-x-4" aria-label="Tabs">
-                <button class="tab-button active font-medium px-4 py-2 text-sm rounded-t-lg border-b-2 border-transparent hover:border-slate-400 hover:text-slate-700" data-tab="plan"> Plan</button>
-                <button class="tab-button font-medium px-4 py-2 text-sm rounded-t-lg border-b-2 border-transparent hover:border-slate-400 hover:text-slate-700" data-tab="aws">AWS Mapping</button>
-                <button class="tab-button font-medium px-4 py-2 text-sm rounded-t-lg border-b-2 border-transparent hover:border-slate-400 hover:text-slate-700" data-tab="graph">Interactive Graph</button>
+                <button class="tab-button active font-medium px-4 py-2 text-sm rounded-t-lg border-b-2 border-transparent text-slate-400 hover:border-slate-500 hover:text-slate-300" data-tab="plan"> Plan</button>
+                <button class="tab-button font-medium px-4 py-2 text-sm rounded-t-lg border-b-2 border-transparent text-slate-400 hover:border-slate-500 hover:text-slate-300" data-tab="aws">AWS Mapping</button>
+                <button class="tab-button font-medium px-4 py-2 text-sm rounded-t-lg border-b-2 border-transparent text-slate-400 hover:border-slate-500 hover:text-slate-300" data-tab="graph">Interactive Graph</button>
             </nav>
         </div>
 
         <!-- Tab Content -->
-        <div id="tab-content-container" class="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-slate-200">
+        <div id="tab-content-container" class="bg-slate-800/50 p-6 sm:p-8 rounded-2xl shadow-lg border border-slate-700">
             <!--  Plan Tab -->
             <div id="plan" class="tab-content active prose max-w-none">
-                <h2 class="text-3xl font-bold tracking-tight text-slate-900"> Recommendation System Architecture & Plan</h2>
-                <p class="text-lg text-slate-600">This document is a consolidated, step-by-step plan reflecting all  conclusions for building a high-performance, personalized recommendation system.</p>
+                <h2 class="text-3xl font-bold tracking-tight text-slate-100"> Recommendation System Architecture & Plan</h2>
+                <p class="text-lg text-slate-400">This document is a consolidated, step-by-step plan reflecting all  conclusions for building a high-performance, personalized recommendation system.</p>
                 
                 <h3>Phase 1: Data & Feature Engineering</h3>
                 <h4>1. Required Data Sources:</h4>
@@ -145,8 +150,8 @@
 
             <!-- AWS Mapping Tab -->
             <div id="aws" class="tab-content prose max-w-none">
-                 <h2 class="text-3xl font-bold tracking-tight text-slate-900">AWS Service Mapping</h2>
-                 <p class="text-lg text-slate-600">This section maps each component of the  plan to the appropriate AWS service, creating a scalable and manageable cloud architecture.</p>
+                 <h2 class="text-3xl font-bold tracking-tight text-slate-100">AWS Service Mapping</h2>
+                 <p class="text-lg text-slate-400">This section maps each component of the  plan to the appropriate AWS service, creating a scalable and manageable cloud architecture.</p>
                  
                  <h3>Phase 1: Data & Feature Engineering</h3>
                  <ul>
@@ -180,13 +185,13 @@
             <!-- Interactive Graph Tab -->
             <div id="graph" class="tab-content">
                 <div class="text-center mb-8">
-                    <h2 class="text-3xl font-bold tracking-tight text-slate-900">Data Lineage & Latency Graph</h2>
-                    <p class="mt-2 text-lg text-slate-600">This graph shows the real-time data flow for a single recommendation request, including target latencies for each stage. Hover over a component for details.</p>
+                    <h2 class="text-3xl font-bold tracking-tight text-slate-100">Data Lineage & Latency Graph</h2>
+                    <p class="mt-2 text-lg text-slate-400">This graph shows the real-time data flow for a single recommendation request, including target latencies for each stage. Hover over a component for details.</p>
                 </div>
-                <div id="graph-container" class="relative w-full h-[80vh] min-h-[600px] bg-slate-50 rounded-lg border border-slate-200 overflow-hidden">
+                <div id="graph-container" class="relative w-full h-[80vh] min-h-[600px] bg-slate-900 rounded-lg border border-slate-700 overflow-hidden">
                     <canvas id="graph-canvas" class="absolute top-0 left-0 w-full h-full"></canvas>
                     <div id="graph-nodes"></div>
-                    <div id="graph-tooltip" class="absolute hidden bg-slate-800 text-white text-sm rounded-md py-2 px-4 shadow-lg z-20 pointer-events-none"></div>
+                    <div id="graph-tooltip" class="absolute hidden bg-slate-100 text-slate-800 text-sm rounded-md py-2 px-4 shadow-lg z-20 pointer-events-none"></div>
                 </div>
             </div>
         </div>
@@ -239,8 +244,8 @@
         };
 
         const groupColors = {
-            1: 'bg-emerald-100 border-emerald-300 text-emerald-800', // Pipeline Stage
-            2: 'bg-sky-100 border-sky-300 text-sky-800',      // Data Source
+            1: 'bg-emerald-800/50 border-emerald-500 text-emerald-200', // Pipeline Stage
+            2: 'bg-sky-800/50 border-sky-500 text-sky-200',      // Data Source
         };
 
         const nodesContainer = document.getElementById('graph-nodes');
@@ -269,7 +274,7 @@
 
                 if(node.latency) {
                     const latencyEl = document.createElement('span');
-                    latencyEl.className = 'text-blue-600 font-bold text-xs mt-1';
+                    latencyEl.className = 'text-sky-400 font-bold text-xs mt-1';
                     latencyEl.textContent = node.latency;
                     nodeEl.appendChild(latencyEl);
                 }
@@ -298,7 +303,7 @@
                     ctx.beginPath();
                     ctx.moveTo(startX, startY);
                     ctx.lineTo(endX, endY);
-                    ctx.strokeStyle = '#94a3b8'; // slate-400
+                    ctx.strokeStyle = '#475569'; // slate-600
                     ctx.lineWidth = 2;
                     ctx.globalAlpha = 0.6;
                     ctx.stroke();
@@ -309,7 +314,7 @@
                         ctx.textAlign = 'center';
                         ctx.textBaseline = 'bottom';
                         ctx.font = '12px Inter';
-                        ctx.fillStyle = '#64748b'; // slate-500
+                        ctx.fillStyle = '#94a3b8'; // slate-400
                         ctx.translate((startX + endX) / 2, (startY + endY) / 2);
                         
                         let angle = Math.atan2(endY - startY, endX - startX);
@@ -332,7 +337,7 @@
                     ctx.lineTo(-10, -5);
                     ctx.lineTo(-10, 5);
                     ctx.closePath();
-                    ctx.fillStyle = '#94a3b8';
+                    ctx.fillStyle = '#475569';
                     ctx.fill();
                     ctx.restore();
                 }
@@ -365,7 +370,7 @@
                     ctx.beginPath();
                     ctx.moveTo(startX, startY);
                     ctx.lineTo(endX, endY);
-                    ctx.strokeStyle = isConnected ? '#3b82f6' : '#cbd5e1';
+                    ctx.strokeStyle = isConnected ? '#60a5fa' : '#334155';
                     ctx.lineWidth = isConnected ? 3 : 2;
                     ctx.globalAlpha = isConnected ? 1.0 : 0.3;
                     ctx.stroke();
@@ -375,7 +380,7 @@
                         ctx.textAlign = 'center';
                         ctx.textBaseline = 'bottom';
                         ctx.font = '12px Inter';
-                        ctx.fillStyle = isConnected ? '#2563eb' : '#a1a1aa';
+                        ctx.fillStyle = isConnected ? '#93c5fd' : '#64748b';
                         ctx.translate((startX + endX) / 2, (startY + endY) / 2);
                         
                         let angle = Math.atan2(endY - startY, endX - startX);
@@ -397,7 +402,7 @@
                     ctx.lineTo(-10, -5);
                     ctx.lineTo(-10, 5);
                     ctx.closePath();
-                    ctx.fillStyle = isConnected ? '#3b82f6' : '#cbd5e1';
+                    ctx.fillStyle = isConnected ? '#60a5fa' : '#334155';
                     ctx.fill();
                     ctx.restore();
                 }
